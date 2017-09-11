@@ -1,0 +1,34 @@
+(in-package :cl-user)
+(defpackage restful-agraph-user
+  (:use :cl :db.agraph :sparql :prolog :excl)
+  (:export :on :off))
+  
+(in-package :restful-agraph-user)
+
+(defparameter *triple-store-args*
+  '("TRIPLE-STORE-NAME"
+    ;; :catalog ; default is root catalog
+    ;; :server ; default is localhost
+    ;; :port ; default is default-ag-http-port and usuallly it's 10035
+    :user "USERNAME" ; set to your username
+    :password "PASSWORD" ; and password
+    ;; :scheme ; default is http and can be https)
+    "See AllegroGraph API for more information. https://franz.com/agraph/support/documentation/current/lisp-reference.html#open-triple-store"))
+
+;;;WARNING should use variable to remember returned triple-store or make sure restful-agraph-user:*db* is different from db.agraph:*db*
+
+(defun on ()
+  (apply #'open-triple-store
+	 *triple-store-args*))
+
+(defun off ()
+  (close-triple-store))
+
+(do-external-symbols (s (find-package 'db.agraph))
+  (export s))
+
+  
+  
+  
+  
+  
